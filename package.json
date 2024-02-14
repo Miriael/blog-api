@@ -1,0 +1,24 @@
+{
+  "name": "blog-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=poke-merch-store:* npm run devstart"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "http-errors": "~1.6.3",
+    "lucia": "^3.0.1",
+    "mongoose": "^8.1.2",
+    "morgan": "~1.9.1",
+    "oslo": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
