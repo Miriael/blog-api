@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const CommentSchema = new Schema({
-  parentPost: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  parentPost: { type: Schema.Types.ObjectId, ref: "Blogpost", required: true },
   content: { type: String, required: true, minLength: 1 },
   author: { type: String, required: true, minLength: 1, maxLength: 100 },
   email: { type: String, minLength: 1, maxLength: 100 },
