@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
+import { mongoose } from 'mongoose';
 
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
-  name: { type: String, required: true, minLength: 1, maxLength: 100 },
-  login: { type: String, required: true, minLength: 1 },
+  _id : { type: String, required: true},
+  username: { type: String, required: true, minLength: 1, maxLength: 100 },
   password: { type: String, required: true, minLength: 1 },
-  posts: { type: Array, required: true },
-});
+  posts: { type: Array },
+},
+{ _id: false });
 
 UserSchema.virtual("url").get(function () {
   return `/user/${this._id}`
 });
 
-module.exports = mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);
