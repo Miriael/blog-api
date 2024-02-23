@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+import 'dotenv/config'
 import app from '../app.js';
 import Debug from 'debug';
 const debug = Debug('blog-api:server');

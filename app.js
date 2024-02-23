@@ -25,7 +25,7 @@ app.use(async (req, res, next) => {
 		res.locals.session = null;
 		return next();
 	}
-
+  console.log(await lucia.validateSession(sessionId))
 	const { session, user } = await lucia.validateSession(sessionId);
 	if (session && session.fresh) {
 		res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize());

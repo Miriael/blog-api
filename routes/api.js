@@ -8,7 +8,9 @@ import * as sessionController from "../controllers/sessionController.js"
 import * as userController from "../controllers/userController.js"
 
 router.get("/", async(req, res) => {
-  if (res.locals.session) {
+  console.log(res.locals.session)
+  console.log(res.locals.user)
+  if (res.locals.session != null) {
     return res.send('You are logged in!')
   }
   return res.send('You are not logged in.')
@@ -82,10 +84,10 @@ router.post('/user', userController.user_create)
 
 // router.get('/blogposts', blogpostController.blogpost_list)
 
-// blogpostController routes
+// sessionController routes
 router.post('/session', sessionController.session_create)
 
-// router.delete('/session/:id', sessionController.session_delete)
+router.delete('/session', sessionController.session_delete)
 
 
 

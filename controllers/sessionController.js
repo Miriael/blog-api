@@ -30,3 +30,11 @@ export const session_create = (asyncHandler (async (req, res) => {
 		.appendHeader("Location", "/")
 		.redirect("/");
 }))
+
+export const session_delete = (asyncHandler (async (req, res) => {
+  if (res.locals.session == null) {
+    return res.redirect('/')
+  }
+  await lucia.invalidateUserSessions(res.locals.user.id);
+  res.send('You have been logged out.')
+}))
