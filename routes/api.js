@@ -65,11 +65,11 @@ router.get("/", async(req, res) => {
 // // userController routes
 router.post('/user', userController.user_create)
 
-// router.get('/user/:id', userController.user_read)
+router.get('/user', userController.user_read)
 
-// router.put('/user/:id', userController.user_update)
+router.put('/user', userController.user_update)
 
-// router.delete('/user/:id', userController.user_delete)
+router.delete('/user', userController.user_delete)
 
 // router.get('/users', userController.user_list)
 
