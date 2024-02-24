@@ -8,11 +8,7 @@ const CommentSchema = new Schema({
   author: { type: String, required: true, minLength: 1, maxLength: 100 },
   email: { type: String, minLength: 1, maxLength: 100 },
   timestamp: { type: Date, required: true },
-  responseToComment: { type: Schema.Types.ObjectId, ref: comment },
+  responseToComment: { type: Schema.Types.ObjectId, ref: "Comment" },
 });
 
-CommentSchema.virtual("url").get(function () {
-  return `/comment/${this._id}`
-});
-
-module.exports = mongoose.model("Comment", CommentSchema);
+export default mongoose.model("Comment", CommentSchema);

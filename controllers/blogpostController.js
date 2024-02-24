@@ -1,102 +1,42 @@
-// const Blogpost = require('../models/blogpost');
-// const { body, validationResult }= require('express-validator');
-// const asyncHandler = require('express-async-handler');
+import asyncHandler from "express-async-handler";
+import User from '../models/user.js'; 
+import Blogpost from '../models/blogpost.js';
 
+export const blogpost_create = asyncHandler((async (req, res, next) => {
+  const newBlogpost = Blogpost.new({
+    title: req.body.title,
+    content: req.body.content,
+    timestamp: new Date.now.toISOString(),
+    published: req.body.published,
+    author: res.locals.user
+  });
+  await newBlogpost.save();
+  res.setHeader("Content-Type", 'text/html').status(200).send('Blogpost created');
+}))
 
-// exports.category_create_post = [
-//   // Form input validation and sanitization
-//   body("title").trim().isLength({ min: 1 }).escape().withMessage("Category name must be specified."),
-//   body("content").trim().isLength({ min: 1 }).escape().withMessage("Category description must be specified."),
+export const blogpost_read = asyncHandler((async (req, res, next) => {
+  const currentBlogpost = await Blogpost.find({ id: req.body.id }).populate("User").exec();
+  res.json(currentBlogpost);
+}))
 
-//   // Process request
-//   asyncHandler(async (req, res, next) => {
-//     const errors = validationResult(req)
+export const blogpost_update = asyncHandler((async (req, res, next) => {
+  const requestedBlogpost = await Blogpost.find({ id: req.body.id }).exec();
+  const newTitle = req.body.title != null ? req.body.title : requestedBlogpost.title;
+  const newContent = req.body.content != null ? req.body.content : requestedBlogpost.content;
+  const newPublished = red.body.published == true ? true : false;
+  const updatedBlogpost = Blogpost.new({
+    _id: req.body.id,
+    title: newTitle,
+    content: newContent,
+    editedTimestamp : new Date.now.toISOString(),
+    published: newPublished,
+    author: requestedBlogpost.author,
+  });
+  await Blogpost.findByIdAndUpdate(req.body.id, updatedBlogpost, {});
+  res.setHeader("Content-Type", "text/html").setStatus(200).send('Blogpost updated');
+}))
 
-//     const category = new Category({
-//       name: req.body.name,
-//       description: req.body.description
-//     });
-
-//     if (!errors.isEmpty()) {
-//       res.render("category_form", {
-//         title: "Create Category",
-//         category: category,
-//         errors: errors.array()
-//       })
-//     } else {
-//       await category.save();
-//       res.redirect(category.url);
-//     }
-//   })
-// ]
-
-// exports.category_update_post = [
-//   // Form input validation and sanitization
-//   body("name").trim().isLength({ min: 1 }).escape().withMessage("Category name must not be empty."),
-//   body("description").trim().isLength({ min: 1 }).escape().withMessage("Category description must not be empty."),
-
-//   // Process request
-//   asyncHandler(async (req, res, next) => {
-//     const errors = validationResult(req);
-
-//     const category = new Category({
-//       name: req.body.name,
-//       description: req.body.description,
-//       _id: req.params.id
-//     })
-
-//   if (!errors.isEmpty())  {
-//     res.render("category_form", {
-//       title: "Update Category",
-//       category: category,
-//       errors: errors
-//     })
-//   } else {
-//     const updatedCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
-//     res.redirect(updatedCategory.url)
-//   }
-//   })
-// ]
-
-// exports.category_delete_post = asyncHandler(async (req, res, next) => {
-//   const [category, itemsInCategory] = await Promise.all([
-//     Category.findById(req.params.id).exec(),
-//     Item.find({ category: req.params.id })
-//   ])
-
-//   if (itemsInCategory.length > 1) {
-//     res.render("category_delete", {
-//       title: "Delete Category",
-//       category: category,
-//       item_list: itemsInCategory
-//     })
-//     return;
-//   } else {
-//     await Category.findByIdAndDelete(req.params.id);
-//     res.redirect('/categories')
-//   }
-// })
-
-// exports.category_detail = asyncHandler(async (req, res, next) => {
-//   const [category, itemsInCategory] = await Promise.all([
-//     Category.findById(req.params.id).exec(),
-//     Item.find({ category: req.params.id }).exec()
-//   ])
-
-//   res.render('category_detail', {
-//     title: "Category details",
-//     category: category,
-//     itemList: itemsInCategory
-//   })
-// })
-
-// exports.category_list = asyncHandler(async (req, res, next) => {
-//   const allCategories = await Category.find().exec();
-
-//   res.render('category_list', {
-//     title: "Categories",
-//     categories: allCategories
-//   })
-// })
-
-
+export const blogpost_delete = asyncHandler((async (req, res, next) => {
+  await Blogpost.findByIdAndDelete(req.body.id);
+  res.setHeader("Content-Type", "text/html").setStatus(200).send('Blogpost deleted');
+}))
