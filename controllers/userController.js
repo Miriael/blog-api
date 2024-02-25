@@ -41,7 +41,7 @@ export const user_update = asyncHandler((async (req, res, next) => {
   if (await new Argon2id().verify(requestedUser.password, password)) {
     const newPassword = req.body.password != null ? await new Argon2id().hash(req.body.password) : requestedUser.password;
     const newUsername = req.body.username != null ? req.body.username : requestedUser.username;
-    const newUser = User.new({
+    const newUser = new User({
       _id: requestedUser.id,
       username: newUsername,
       password: newPassword

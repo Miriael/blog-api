@@ -4,20 +4,20 @@ import Blogpost from '../models/blogpost.js';
 import Comment from '../models/comment.js';
 
 export const comment_create = asyncHandler((async (req, res, next) => {
-  const newComment = Comment.new({
-    parentPost: req.body.title,
+  const newComment = new Comment({
+    parentPost: req.body.parentid,
     content: req.body.content,
     author: req.body.author,
     email: req.body.email,
-    timestamp: Date.now.toISOString(),
-    responsetocomment: req.body.response ? req.boody.response : null
+    timestamp: new Date(),
+    responseToComment: req.body.response ? req.body.response : null
   });
-  await newBlogpost.save();
-  res.setHeader("Content-Type", 'text/html').status(200).send('Blogpost created');
+  await newComment.save();
+  res.setHeader("Content-Type", 'text/html').status(200).send('Comment created');
 }))
 
 export const comment_read = asyncHandler((async (req, res, next) => {
-  const requestedComment = await Comment.find({ id: req.body.id }).populate('parentPost').populate('responseToComment').exec();
+  const requestedComment = await Comment.find({ _id: req.body.id }).populate('parentPost').populate('responseToComment').exec();
   res.json(requestedComment);
 }))
 

@@ -6,6 +6,8 @@ import logger from 'morgan';
 import apiRouter from './routes/api.js';
 import lucia from './adapter.js'
 
+
+//REWRITE USERID STUFF
 var app = express();
 
 // mongoose connection setup

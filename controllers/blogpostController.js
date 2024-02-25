@@ -3,28 +3,29 @@ import User from '../models/user.js';
 import Blogpost from '../models/blogpost.js';
 
 export const blogpost_create = asyncHandler((async (req, res, next) => {
-  const newBlogpost = Blogpost.new({
+  const newBlogpost = new Blogpost({
     title: req.body.title,
     content: req.body.content,
-    timestamp: new Date.now.toISOString(),
+    timestamp: new Date(),
     published: req.body.published,
-    author: res.locals.user
+    author: req.params.id
   });
+  console.log(newBlogpost)
   await newBlogpost.save();
   res.setHeader("Content-Type", 'text/html').status(200).send('Blogpost created');
 }))
 
 export const blogpost_read = asyncHandler((async (req, res, next) => {
-  const currentBlogpost = await Blogpost.find({ id: req.body.id }).populate("User").exec();
-  res.json(currentBlogpost);
+  const requestedBlogpost = await Blogpost.find({ _id: req.body.id }).populate('author', '-_id username').exec();
+  res.json(requestedBlogpost);
 }))
 
 export const blogpost_update = asyncHandler((async (req, res, next) => {
-  const requestedBlogpost = await Blogpost.find({ id: req.body.id }).exec();
+  const requestedBlogpost = await Blogpost.find({ _id: req.body.id }).exec();
   const newTitle = req.body.title != null ? req.body.title : requestedBlogpost.title;
   const newContent = req.body.content != null ? req.body.content : requestedBlogpost.content;
   const newPublished = red.body.published == true ? true : false;
-  const updatedBlogpost = Blogpost.new({
+  const updatedBlogpost = new Blogpost({
     _id: req.body.id,
     title: newTitle,
     content: newContent,
