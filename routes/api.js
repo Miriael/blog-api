@@ -6,12 +6,10 @@ import * as commentController from "../controllers/commentController.js";
 import * as blogpostController from "../controllers/blogpostController.js";
 
 router.get("/", async(req, res) => {
-  console.log(res.locals.session)
-  console.log(res.locals.user)
-  if (res.locals.session != null) {
-    return res.send('You are logged in!')
+  if (res.locals.session ===null) {
+    return res.status(403).send('You are not logged in.')
   }
-  return res.send('You are not logged in.')
+  res.send('You are logged in.')
 })
 
 // commentController routes
@@ -19,30 +17,70 @@ router.post('/comment', commentController.comment_create)
 
 router.get('/comment', commentController.comment_read)
 
-router.delete('/comment', commentController.comment_delete)
+router.delete('/comment', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  commentController.comment_delete
+})
 
 // userController routes
-router.post('/user', userController.user_create)
+router.post('/user', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  userController.user_create
+})
 
 router.get('/user', userController.user_read)
 
-router.put('/user', userController.user_update)
+router.put('/user', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  userController.user_update
+})
 
-router.delete('/user', userController.user_delete)
+router.delete('/user', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  userController.user_delete
+})
 
 // blogpostController routes
-router.post('/blogpost', blogpostController.blogpost_create)
+router.post('/blogpost', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  blogpostController.blogpost_create
+})
 
 router.get('/blogpost', blogpostController.blogpost_read)
 
-router.put('/blogpost', blogpostController.blogpost_update)
+router.put('/blogpost', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  blogpostController.blogpost_update
+})
 
-router.delete('/blogpost', blogpostController.blogpost_delete)
+router.delete('/blogpost', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  blogpostController.blogpost_delete
+})
 
 // sessionController routes
 router.post('/session', sessionController.session_create)
 
-router.delete('/session', sessionController.session_delete)
+router.delete('/session', async(req, res) => {
+  if (res.locals.session === null) {
+    return res.sendStatus(403)
+  }
+  sessionController.session_delete
+})
 
 
 
