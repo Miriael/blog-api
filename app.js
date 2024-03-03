@@ -6,8 +6,6 @@ import logger from 'morgan';
 import apiRouter from './routes/api.js';
 import lucia from './adapter.js'
 
-
-//REWRITE USERID STUFF
 var app = express();
 
 // mongoose connection setup
@@ -20,6 +18,7 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
+// lucia-auth initialization
 app.use(async (req, res, next) => {
 	const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
 	if (!sessionId) {
@@ -27,7 +26,6 @@ app.use(async (req, res, next) => {
 		res.locals.session = null;
 		return next();
 	}
-  console.log(await lucia.validateSession(sessionId))
 	const { session, user } = await lucia.validateSession(sessionId);
 	if (session && session.fresh) {
 		res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize());
@@ -45,8 +43,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(import.meta.filename, 'public')));
-
-
 
 app.use('/api', apiRouter);
 
