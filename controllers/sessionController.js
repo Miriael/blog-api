@@ -5,7 +5,7 @@ import User from '../models/user.js';
 import { body, validationResult } from "express-validator"
 
 export const session_create = [
-  // Validation chain
+  // Validation chain 
   body('username').trim().isLength({ min: 1 }).escape().withMessage("Username missing."),
   body('password').trim().isLength({ min: 1 }).escape().withMessage("Password missing."),
 
@@ -19,18 +19,17 @@ export const session_create = [
     if (res.locals.session != null) {
       return res.setHeader("Content-Type", "text/html").status(200).send("You are already logged in.")
     }
-
-    const existingUser = await User.findOne({ username: username }).exec();
+    const existingUser = await User.findOne({ username: req.body.username }).exec();
     if (!existingUser) {
       return res.setHeader("Content-Type", "text/html").status(403).send("Wrong username or password.")
     }
     console.log(existingUser)
-    const validPassword = await new Argon2id().verify(existingUser.password, password);
+    const validPassword = await new Argon2id().verify(existingUser.password, req.body.password);
     if (!validPassword) {
       return res.setHeader("Content-Type", "text/html").status(403).send("Wrong username or password.")
     }
     const session = await lucia.createSession(existingUser.id, {});
-    res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize()).appendHeader("Location", "/").redirect("/");
+    res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize() + 'sameSite=None; Secure; HttpOnly').appendHeader("Location", "/").send('ok');
 })]
 
 export const session_delete = (asyncHandler (async (req, res) => {

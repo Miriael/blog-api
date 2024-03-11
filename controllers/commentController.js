@@ -13,6 +13,16 @@ export const comment_create = [
   body('response').trim().isLength({ min: 1 }).escape(),
 
   asyncHandler((async (req, res, next) => {
+    await Blogpost.exists({ _id: req.body.parentid }, (err, result) => {
+      if (err) return res.sendStatus(400);
+      if (result === null) return res.setHeader("Content-Type", "text/html").status(400).send("Malformed or nonexisting parent id");
+    })
+
+    await Comment.exists({ _id: req.body.response }, (err, result) => {
+      if (err) return res.sendStatus(400);
+      if (result === null) return res.setHeader("Content-Type", "text/html").status(400).send("Malformed response id");
+    })
+
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {

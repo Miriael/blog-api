@@ -9,7 +9,7 @@ router.get("/", async(req, res) => {
   if (res.locals.session === null) {
     return res.status(403).send('You are not logged in.')
   }
-  res.send('You are logged in.')
+  res.json('You are logged in.')
 })
 
 // commentController routes

@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import apiRouter from './routes/api.js';
 import lucia from './adapter.js'
+import cors from 'cors';
 
 var app = express();
 
@@ -38,6 +39,10 @@ app.use(async (req, res, next) => {
 	return next();
 });
 
+app.use(cors({
+  origin: 'http://localhost:4321',
+  credentials:true,
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
