@@ -79,6 +79,8 @@ router.delete('/blogpost', (req, res, next) => {
   blogpostController.blogpost_delete
 )
 
+router.get('/blogpost-list', blogpostController.blogpost_list)
+
 // sessionController routes
 router.post('/session', sessionController.session_create)
 

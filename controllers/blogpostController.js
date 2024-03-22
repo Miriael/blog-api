@@ -9,7 +9,6 @@ export const blogpost_create = [
   body('title').trim().isLength({ min: 1, max: 400 }).escape(),
   body('content').trim().isLength({ min: 1, max: 100000 }).escape(),
   body('published').trim().isLength({ min: 1}).escape(),
-  body('author').trim().isLength({ min: 1 }).escape(),
 
   asyncHandler((async (req, res, next) => {
     const errors = validationResult(req);
@@ -23,7 +22,7 @@ export const blogpost_create = [
       content: req.body.content,
       timestamp: new Date(),
       published: req.body.published,
-      author: req.body.author
+      author: res.locals.user.id
     });
     console.log(newBlogpost)
     await newBlogpost.save();
@@ -68,4 +67,9 @@ export const blogpost_delete = asyncHandler((async (req, res, next) => {
   await Comment.deleteMany({ parentPost: req.body.id });
   await Blogpost.findByIdAndDelete(req.body.id);
   res.setHeader("Content-Type", "text/html").setStatus(200).send('Blogpost deleted');
+}))
+
+export const blogpost_list = asyncHandler((async (req, res, next) => {
+  const blogpostList = await Blogpost.find().populate('author', '-_id username').exec();
+  res.json(blogpostList);
 }))
