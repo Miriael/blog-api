@@ -19,6 +19,11 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
+app.use(cors({
+  origin: 'http://localhost:4321',
+  credentials:true,
+}))
+
 // lucia-auth initialization
 app.use(async (req, res, next) => {
 	const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
@@ -39,10 +44,6 @@ app.use(async (req, res, next) => {
 	return next();
 });
 
-app.use(cors({
-  origin: 'http://localhost:4321',
-  credentials:true,
-}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
