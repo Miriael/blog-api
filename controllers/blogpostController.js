@@ -22,7 +22,8 @@ export const blogpost_create = [
       content: req.body.content,
       timestamp: new Date(),
       published: req.body.published,
-      author: res.locals.user.id
+      author: res.locals.user.id,
+      commentCount: 0
     });
     console.log(newBlogpost)
     await newBlogpost.save();
@@ -58,6 +59,7 @@ export const blogpost_update = [
       editedTimestamp : new Date.now.toISOString(),
       published: newPublished,
       author: requestedBlogpost.author,
+      commentCount: requestedBlogpost.commentCount
     });
     await Blogpost.findByIdAndUpdate(req.body.id, updatedBlogpost, {});
     res.setHeader("Content-Type", "text/html").setStatus(200).send('Blogpost updated');

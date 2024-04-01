@@ -8,7 +8,8 @@ const BlogpostSchema = new Schema({
   timestamp: { type: Date, required: true },
   editedTimestamp: { type: Date },
   published: { type: Boolean, required: true },
-  author: { type: Schema.Types.String, ref: "User", required: true }
+  author: { type: Schema.Types.String, ref: "User", required: true },
+  commentCount: {type: Number, required: true }
 });
 
 export default mongoose.model("Blogpost", BlogpostSchema);

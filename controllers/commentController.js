@@ -9,19 +9,16 @@ export const comment_create = [
   body('parentid').trim().isLength({ min: 1, max: 24 }).escape(),
   body('content').trim().isLength({ min: 1, max: 100000 }).escape(),
   body('author').trim().isLength({ min: 1}).escape(),
-  body('email').trim().isLength({ min: 1 }).escape(),
-  body('response').trim().isLength({ min: 1 }).escape(),
+  body('email').trim().isLength({ min: 1 }).escape().optional(),
+  body('response').trim().isLength({ min: 1 }).escape().optional(),
 
   asyncHandler((async (req, res, next) => {
-    await Blogpost.exists({ _id: req.body.parentid }, (err, result) => {
-      if (err) return res.sendStatus(400);
-      if (result === null) return res.setHeader("Content-Type", "text/html").status(400).send("Malformed or nonexisting parent id");
-    })
-
-    await Comment.exists({ _id: req.body.response }, (err, result) => {
-      if (err) return res.sendStatus(400);
-      if (result === null) return res.setHeader("Content-Type", "text/html").status(400).send("Malformed response id");
-    })
+    if (!await Blogpost.exists({ _id: req.body.parentid })) {
+      return res.setHeader("Content-Type", "text/html").status(400).send("Malformed or nonexisting parent id")}
+    if (req.body.response) {
+      if (!await Comment.exists({ _id: req.body.response })) {
+        return res.setHeader("Content-Type", "text/html").status(400).send("Malformed response id")}
+    }
 
     const errors = validationResult(req);
 
@@ -33,11 +30,12 @@ export const comment_create = [
       parentPost: req.body.parentid,
       content: req.body.content,
       author: req.body.author,
-      email: req.body.email,
+      email: req.body.email ? req.body.email : null,
       timestamp: new Date(),
       responseToComment: req.body.response ? req.body.response : null
     });
     await newComment.save();
+    await Blogpost.updateOne( { _id: req.body.parentid }, { $inc: { commentCount: 1 } } );
     res.setHeader("Content-Type", 'text/html').status(200).send('Comment created');
 }))]
 
