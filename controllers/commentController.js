@@ -40,7 +40,8 @@ export const comment_create = [
 }))]
 
 export const comment_read = asyncHandler((async (req, res, next) => {
-  const requestedComment = await Comment.find({ _id: req.params.id }).populate('parentPost').populate('responseToComment').exec();
+  const requestedComment = await Comment.find({ parentPost: req.params.id }).populate('parentPost').populate('responseToComment').exec();
+  console.log(requestedComment)
   res.json(requestedComment);
 }))
 

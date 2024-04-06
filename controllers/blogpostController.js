@@ -56,7 +56,7 @@ export const blogpost_update = [
       _id: req.body.id,
       title: newTitle,
       content: newContent,
-      editedTimestamp : new Date.now.toISOString(),
+      editedTimestamp : new Date.now(),
       published: newPublished,
       author: requestedBlogpost.author,
       commentCount: requestedBlogpost.commentCount
