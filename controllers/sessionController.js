@@ -29,7 +29,7 @@ export const session_create = [
       return res.setHeader("Content-Type", "text/html").status(403).send("Wrong username or password.")
     }
     const session = await lucia.createSession(existingUser.id, {});
-    res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize() + 'sameSite=None; Secure; HttpOnly').appendHeader("Location", "/").send('ok');
+    res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize() + '; SameSite=None; Secure; HttpOnly').appendHeader("Location", "/").send('ok');
 })]
 
 export const session_delete = (asyncHandler (async (req, res) => {

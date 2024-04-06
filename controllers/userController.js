@@ -36,7 +36,7 @@ export const user_create = [
 ]
 
 export const user_read = asyncHandler((async (req, res, next) => {
-  const requestedUser = await User.findOne({ username: req.body.username }, "-_id username").exec();
+  const requestedUser = await User.findOne({ username: req.params.username }, "-_id username").exec();
   res.json(requestedUser);
 }))
 

@@ -21,7 +21,7 @@ async function main() {
 
 app.use(cors({
   origin: 'http://localhost:4321',
-  credentials:true,
+  credentials: true,
 }))
 
 // lucia-auth initialization

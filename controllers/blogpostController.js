@@ -31,7 +31,7 @@ export const blogpost_create = [
 }))]
 
 export const blogpost_read = asyncHandler((async (req, res, next) => {
-  const requestedBlogpost = await Blogpost.find({ _id: req.body.id }).populate('author', '-_id username').exec();
+  const requestedBlogpost = await Blogpost.find({ _id: req.params.id }).populate('author', '-_id username').exec();
   res.json(requestedBlogpost);
 }))
 

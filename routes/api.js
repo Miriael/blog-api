@@ -15,7 +15,7 @@ router.get("/", async(req, res) => {
 // commentController routes
 router.post('/comment', commentController.comment_create)
 
-router.get('/comment', commentController.comment_read)
+router.get('/comment/:id', commentController.comment_read)
 
 router.delete('/comment', (req, res, next) => {
   if (res.locals.session === null) {
@@ -34,7 +34,7 @@ router.post('/user', (req, res, next) => {
   userController.user_create
 )
 
-router.get('/user', userController.user_read)
+router.get('/user/:id', userController.user_read)
 
 router.put('/user', (req, res, next) => {
   if (res.locals.session === null) {
@@ -61,7 +61,7 @@ router.post('/blogpost', (req, res, next) => {
   blogpostController.blogpost_create
 )
 
-router.get('/blogpost', blogpostController.blogpost_read)
+router.get('/blogpost/:id', blogpostController.blogpost_read)
 
 router.put('/blogpost', (req, res, next) => {
   if (res.locals.session === null) {
