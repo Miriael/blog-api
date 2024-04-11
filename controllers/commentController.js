@@ -9,7 +9,6 @@ export const comment_create = [
   body('parentid').trim().isLength({ min: 1, max: 24 }).escape(),
   body('content').trim().isLength({ min: 1, max: 100000 }).escape(),
   body('author').trim().isLength({ min: 1}).escape(),
-  body('email').trim().isLength({ min: 1 }).escape().optional(),
   body('response').trim().isLength({ min: 1 }).escape().optional(),
 
   asyncHandler((async (req, res, next) => {
@@ -30,7 +29,6 @@ export const comment_create = [
       parentPost: req.body.parentid,
       content: req.body.content,
       author: req.body.author,
-      email: req.body.email ? req.body.email : null,
       timestamp: new Date(),
       responseToComment: req.body.response ? req.body.response : null
     });
